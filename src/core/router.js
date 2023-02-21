@@ -10,6 +10,18 @@ export default function Router() {
     // { path: /^\/test\/(\d+)$/, view: () => console.log("") },
   ];
 
+  this.currentPage = "/";
+
+  this.$historyStack = [];
+
+  this.init = () => {
+    this.navigate(this.currentPage);
+
+    window.onpopstate = (e) => {
+      this.navigate(location.href);
+    };
+  };
+
   // 뷰 랜더링
   this.render = () => {
     const $view = findMatchRoute().view;
@@ -20,8 +32,11 @@ export default function Router() {
 
   // 이동
   this.navigate = (url) => {
-    history.pushState(null, "", url);
+    history.pushState({ url: url }, "", url);
+    this.currentPage = url;
     this.render();
+
+    this.$historyStack.push(history.state);
   };
 
   // 현재 url과 맞는 url 정보 찾기
