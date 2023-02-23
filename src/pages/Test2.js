@@ -6,8 +6,7 @@ export default function Test2() {
   this.$data = [123, 124, 678];
 
   this.init = () => {
-    this.render();
-    this.setEvent();
+    setEvent();
   };
 
   this.render = () => {
@@ -19,7 +18,7 @@ export default function Test2() {
             </nav>`;
   };
 
-  this.setEvent = () => {
+  const setEvent = () => {
     document.querySelector("#test-nav")?.addEventListener("click", (e) => {
       if (e.target.matches("[data-link]")) {
         e.preventDefault();

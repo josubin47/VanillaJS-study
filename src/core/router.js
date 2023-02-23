@@ -12,42 +12,29 @@ export default function Router() {
     { path: /^\/test\/(\d+)$/, view: TestA },
   ];
 
-  this.currentPage = "/";
+  this.initstate = "/";
 
-  this.$historyStack = [];
-
+  // 초기화
   this.init = () => {
-    this.navigate(this.currentPage);
+    this.navigate(this.initstate);
 
     window.onpopstate = (e) => {
       this.navigate(location.href);
     };
   };
 
-  // 뷰 랜더링
+  //뷰 렌더링
   this.render = (id) => {
     const $view = findMatchRoute().view;
-
-    let app;
-
-    if (id !== undefined) {
-      app = new $view(id);
-    } else {
-      app = new $view();
-    }
-
+    const app = new $view(id ?? undefined);
     document.querySelector("#app").innerHTML = app.render();
-
     app.init();
   };
 
   // 이동
   this.navigate = (url, id) => {
     history.pushState({ url: url }, "", url);
-    this.currentPage = url;
     this.render(id);
-
-    this.$historyStack.push(history.state);
   };
 
   // 현재 url과 맞는 url 정보 찾기
