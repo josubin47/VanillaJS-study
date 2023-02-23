@@ -1,13 +1,15 @@
 import Test1 from "../pages/Test1.js";
 import Home from "../pages/Home.js";
+import Test2 from "../pages/Test2.js";
+import TestA from "../pages/TestA.js";
 
 export default function Router() {
   // url 정보
   const routes = [
     { path: /^\/$/, view: Home },
     { path: /\/test1/, view: Test1 },
-    //  { path: "/test2", view: () => console.log("테스트2") },
-    // { path: /^\/test\/(\d+)$/, view: () => console.log("") },
+    { path: /\/test2/, view: Test2 },
+    { path: /^\/test\/(\d+)$/, view: TestA },
   ];
 
   this.currentPage = "/";
@@ -23,18 +25,27 @@ export default function Router() {
   };
 
   // 뷰 랜더링
-  this.render = () => {
+  this.render = (id) => {
     const $view = findMatchRoute().view;
 
-    const app = new $view();
+    let app;
+
+    if (id !== undefined) {
+      app = new $view(id);
+    } else {
+      app = new $view();
+    }
+
     document.querySelector("#app").innerHTML = app.render();
+
+    app.init();
   };
 
   // 이동
-  this.navigate = (url) => {
+  this.navigate = (url, id) => {
     history.pushState({ url: url }, "", url);
     this.currentPage = url;
-    this.render();
+    this.render(id);
 
     this.$historyStack.push(history.state);
   };

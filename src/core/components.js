@@ -1,10 +1,19 @@
 export default function Component() {
   this.init = () => {
-    this.template();
+    this.render();
+    this.setEvent();
   };
-  this.template = () => {
+
+  this.render = () => {
     return ``;
   };
+
+  this.setEvent = (e) => {
+    dispatchEvent(e);
+  };
+
+  // ! 이벤트 해제 함수
+  // this.closeEvent () => {}
 }
 const component = new Component();
 component.init();
