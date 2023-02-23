@@ -33,7 +33,14 @@ export default function Router() {
 
   // 이동
   this.navigate = (url, id) => {
-    history.pushState({ url: url }, "", url);
+    // 중복 스택 방지
+    if (history.state.url === url) {
+      // 현재 state와 바꾸려는 url이 같을 경우
+      history.replaceState({ url: url }, "", url);
+    } else {
+      history.pushState({ url: url }, "", url);
+    }
+
     this.render(id);
   };
 
