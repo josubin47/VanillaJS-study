@@ -1,10 +1,14 @@
 import api from "../core/api.js";
+import { debounce } from "../utils/handle.js";
 
 export default function Test1() {
   this.init = () => {};
 
   this.setData = async () => {
-    const data = await api.getList();
+    const data = { data: {} };
+    debounce(async () => {
+      data.data = await api.getList();
+    });
     console.log(data);
   };
 
